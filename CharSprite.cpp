@@ -1,4 +1,4 @@
-#include "CharSprite.h"
+#include "CharSprite.hpp"
 
 CharSprite::CharSprite(SDL_Surface* screen, int xpos, int ypos) :
   MySprite::MySprite(screen,xpos,ypos) {

@@ -1,7 +1,7 @@
 #ifndef __CHARSPRITE_H
 #define __CHARSPRITE_H
 
-#include "MySprite.h"
+#include "MySprite.hpp"
 
 class CharSprite : public MySprite {
 

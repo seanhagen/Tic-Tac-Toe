@@ -1,4 +1,4 @@
-#include "InputComponent.h"
+#include "InputComponent.hpp"
 #include <iostream>
 using namespace std;
 

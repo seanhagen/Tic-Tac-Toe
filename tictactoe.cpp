@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "GameEngine.h"
+#include "GameEngine.hpp"
 
 using namespace std;
 

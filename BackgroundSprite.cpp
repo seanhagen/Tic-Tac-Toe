@@ -1,4 +1,4 @@
-#include "BackgroundSprite.h"
+#include "BackgroundSprite.hpp"
 #include <iostream>
 
 using namespace std;

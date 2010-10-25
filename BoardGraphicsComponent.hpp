@@ -1,7 +1,7 @@
 #ifndef __BOARDGRAPHICSCOMPONENT_H
 #define __BOARDGRAPHICSCOMPONENT_H
 
-#include "GraphicsComponent.h"
+#include "GraphicsComponent.hpp"
 
 class BoardGraphicsComponent : public GraphicsComponent {
  public:

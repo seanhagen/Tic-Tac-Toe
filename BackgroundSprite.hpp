@@ -1,7 +1,7 @@
 #ifndef __BACKGROUNDSPRITE_H
 #define __BACKGROUNDSPRITE_H
 
-#include "MySprite.h"
+#include "MySprite.hpp"
 
 class BackgroundSprite : public MySprite {
 

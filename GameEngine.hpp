@@ -1,7 +1,7 @@
 #ifndef __GAMEENGINE_H
 #define __GAMEENGINE_H
 
-#include "enums.h"
+#include "enums.hpp"
 
 #include "SDL/SDL.h"
 

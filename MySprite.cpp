@@ -1,4 +1,4 @@
-#include "MySprite.h"
+#include "MySprite.hpp"
 #include <iostream>
 using namespace std;
 

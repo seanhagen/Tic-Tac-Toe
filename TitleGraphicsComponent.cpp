@@ -1,8 +1,8 @@
-#include "TitleGraphicsComponent.h"
-#include "BackgroundSprite.h"
-#include "GameEngine.h"
-#include "GameState.h"
-#include "GameBoard.h"
+#include "TitleGraphicsComponent.hpp"
+#include "BackgroundSprite.hpp"
+#include "GameEngine.hpp"
+#include "GameState.hpp"
+#include "GameBoard.hpp"
 
 TitleGraphicsComponent::TitleGraphicsComponent( GameBoard *board, GameEngine *engine ):
   GraphicsComponent( board, engine ){}

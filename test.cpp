@@ -1,5 +1,5 @@
-#include "GameBoard.h"
-#include "enums.h"
+#include "GameBoard.hpp"
+#include "enums.hpp"
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>

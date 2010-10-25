@@ -1,7 +1,7 @@
-#include "GameState.h"
-#include "InputComponent.h"
-#include "GraphicsComponent.h"
-#include "GameEngine.h"
+#include "GameState.hpp"
+#include "InputComponent.hpp"
+#include "GraphicsComponent.hpp"
+#include "GameEngine.hpp"
 
 GameState::GameState( InputComponent *player_one,
 		      InputComponent *player_two,

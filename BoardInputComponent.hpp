@@ -1,7 +1,7 @@
 #ifndef __BOARDINPUTCOMPONENT_H
 #define __BOARDINPUTCOMPONENT_H
 
-#include "InputComponent.h"
+#include "InputComponent.hpp"
 
 #include "SDL/SDL.h"
 

@@ -1,7 +1,7 @@
-#include "TitleInputComponent.h"
-#include "GameState.h"
-#include "GameBoard.h"
-#include "GameEngine.h"
+#include "TitleInputComponent.hpp"
+#include "GameState.hpp"
+#include "GameBoard.hpp"
+#include "GameEngine.hpp"
 
 #include "SDL_collide.h"
 

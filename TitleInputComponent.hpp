@@ -1,7 +1,7 @@
 #ifndef __TITLEINPUTCOMPONENT_H
 #define __TITLEINPUTCOMPONENT_H
 
-#include "InputComponent.h"
+#include "InputComponent.hpp"
 
 #include "SDL/SDL.h"
 

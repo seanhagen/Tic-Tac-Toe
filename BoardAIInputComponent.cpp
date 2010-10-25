@@ -1,8 +1,8 @@
-#include "BoardAIInputComponent.h"
-#include "enums.h"
-#include "GameEngine.h"
-#include "GameState.h"
-#include "GameBoard.h"
+#include "BoardAIInputComponent.hpp"
+#include "enums.hpp"
+#include "GameEngine.hpp"
+#include "GameState.hpp"
+#include "GameBoard.hpp"
 #include "SDL_collide.h"
 
 #include <iostream>

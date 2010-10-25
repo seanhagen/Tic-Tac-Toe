@@ -1,8 +1,8 @@
 #ifndef __BOARDAIINPUTCOMPONENT_H
 #define __BOARDAIINPUTCOMPONENT_H
 
-#include "InputComponent.h"
-#include "enums.h"
+#include "InputComponent.hpp"
+#include "enums.hpp"
 
 #include "SDL/SDL.h"
 

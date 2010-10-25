@@ -1,4 +1,4 @@
-#include "GraphicsComponent.h"
+#include "GraphicsComponent.hpp"
 #include <iostream>
 using namespace std;
 
