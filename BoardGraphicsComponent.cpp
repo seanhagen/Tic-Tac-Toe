@@ -10,5 +10,7 @@ BoardGraphicsComponent::BoardGraphicsComponent( GameBoard *board, GameEngine *en
 BoardGraphicsComponent::~BoardGraphicsComponent(){}
 
 void BoardGraphicsComponent::update( GameState *obj ){
-
+  BackgroundSprite* background = _engine->getBackground();
+  background->switchFrame( BackgroundSprite::FRAME_BOARD );
+  background->update();
 }
