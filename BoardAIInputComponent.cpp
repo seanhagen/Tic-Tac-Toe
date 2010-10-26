@@ -46,8 +46,17 @@ void BoardAIInputComponent::update( GameState *obj, GameEngine *engine ){
   Values::CurrentTurn turn = engine->getCurrentTurn();
 
   markFriends(turn);
+  cout << "'Friends' Board:" << endl;
+  printBoard(_friends);
+
   markBlocks(turn);
+  cout << "'Blocks' Board:" << endl;
+  printBoard(_blocks);
+
   combine(turn);
+  cout << "'Combined' Board:" << endl;
+  printBoard(_combined);
+
   chooseSquare(turn,engine);
 }
 
@@ -76,6 +85,8 @@ void BoardAIInputComponent::mark( int **board, int check){
 			   // in a column, row, or diagonal
   int foundCheck = 0; // number of 'check' marks found in a column, row, or diagonal
 
+  //cout << "Checking for: " << check << endl;
+
   // check rows
   for ( int i=0; i<_rows; i++ ){ 
     foundOther = false;
@@ -84,12 +95,14 @@ void BoardAIInputComponent::mark( int **board, int check){
     //first, check to see if there are any of mine in this row ( and
     //how many ), and if there are any of the opposing players in this row
     for ( int j=0; j<_columns; j++) {
-      if ( _current_board[i][j] == check ) {
-	foundCheck++;
-      } else {
-	//one of the other players marks has been found, ignore this row
-	foundOther = true;
-	break;
+      if ( _current_board[i][j] != Values::PLAYER_NULL ){
+	if ( _current_board[i][j] == check ) {
+	  foundCheck++;
+	} else {
+	  //one of the other players marks has been found, ignore this row
+	  foundOther = true;
+	  break;
+	}
       }
     }
 
@@ -97,10 +110,14 @@ void BoardAIInputComponent::mark( int **board, int check){
     // add the number of 'check' marks in this row to each cell
     if ( !foundOther ){
       for ( int j=0; j<_columns; j++ ){
-	board[i][j] += (int) pow(foundCheck,foundCheck);
+	if ( _current_board[i][j] == Values::PLAYER_NULL )
+	  board[i][j] += (int) pow(foundCheck,foundCheck);
       }
     }
   }
+
+  //cout << "Board Marked after checking rows" << endl;
+  //printBoard(board);
 
   // check columns
 
@@ -110,20 +127,27 @@ void BoardAIInputComponent::mark( int **board, int check){
 
     //same as above, but this time, for columns.
     for ( int i=0; i<_rows; i++ ) {
-      if ( _current_board[i][j] == check ){
-	foundCheck++;
-      } else {
-	foundOther = true;
-	break;
+      if ( _current_board[i][j] != Values::PLAYER_NULL ){
+	if ( _current_board[i][j] == check ){
+	  foundCheck++;
+	} else {
+	  foundOther = true;
+	  break;
+	}
       }
     }
 
     if ( !foundOther ){
       for ( int i=0; i<_rows; i++ ){ 
-	board[i][j] += (int) pow(foundCheck,foundCheck);
+	if ( _current_board[i][j] == Values::PLAYER_NULL )
+	  board[i][j] += (int) pow(foundCheck,foundCheck);
       }
     }
   }
+
+  // cout << "Board Marked after checking columns" << endl;
+  // printBoard(board);
+
 
   // check diagonal ( top left to bottom right )
 
@@ -132,38 +156,52 @@ void BoardAIInputComponent::mark( int **board, int check){
   // go through the diagonal once, to check for others and how many of
   // 'check' marks there are
   for ( int i=0, j=0; j<_columns, i<_rows; i++, j++ ){
-    if ( _current_board[i][j] == check ){
-      foundCheck++;
-    } else {
-      foundOther = true;
-      break;
+    if ( _current_board[i][j] != Values::PLAYER_NULL ){
+      if ( _current_board[i][j] == check ){
+	foundCheck++;
+      } else {
+	foundOther = true;
+	break;
+      }
     }
   }
 
   if ( !foundOther ){
     // go through the diagonal, adding the number of 'check' marks 
     for ( int i=0, j=0; j<_columns, i<_rows; i++, j++ ){
-      board[i][j] += (int) pow(foundCheck,foundCheck);
+      if ( _current_board[i][j] == Values::PLAYER_NULL )
+	board[i][j] += (int) pow(foundCheck,foundCheck);
     }
   }
+
+  // cout << "Board Marked after checking diagonal ( top left to bottom right )" << endl;
+  // printBoard(board);
 
   // now the other diagonal ( lower left to top right )
   foundOther = false;
   foundCheck = 0;
   for ( int i=(_rows-1), j=0; i>=0, j<_columns; i--, j++ ){
-    if ( _current_board[i][j] == check ){
-      foundCheck++;
-    } else {
-      foundOther = true;
-      break;
+    if ( _current_board[i][j] != Values::PLAYER_NULL ){
+      if ( _current_board[i][j] == check ){
+	foundCheck++;
+      } else {
+	foundOther = true;
+	break;
+      }
     }
   }
 
   if ( !foundOther ){
     for ( int i=(_rows-1), j=0; i>=0, j<_columns; i--, j++ ){
-      board[i][j] += (int) pow(foundCheck,foundCheck);
+      if ( _current_board[i][j] == Values::PLAYER_NULL )
+	board[i][j] += (int) pow(foundCheck,foundCheck);
     }
   }
+
+  // cout << "Board Marked after checking diagonal ( bottom left to top right )" << endl;
+  // printBoard(board);
+
+
 }
 
 void BoardAIInputComponent::combine( Values::CurrentTurn t ){
@@ -265,11 +303,15 @@ void BoardAIInputComponent::zeroMap( int **_map ){
 }
 
 void BoardAIInputComponent::printBoard( int **_map ){
+  cout << "Board[" << _rows << "][" << _columns << "]" << endl;
+
   cout << "+-+-+-+" << endl;
   for ( int i=0; i<_rows; i++) {
     for ( int j=0; j<_columns; j++) {
       cout << "|" << _map[i][j];
     }
+    cout << "|" << endl << "+-+-+-+" << endl;
   }
-  cout << "|" << endl << "+-+-+-+" << endl;
+
+  cout << endl;
 }

@@ -18,10 +18,11 @@ class GameBoard {
 
  private:
   void setupBoard();
-  Values::WinState checkColumns(bool &foundNull);
-  Values::WinState checkRows(bool &foundNull);
-  Values::WinState checkLRDiagonal(bool &foundNull);
-  Values::WinState checkRLDiagonal(bool &foundNull);
+  Values::WinState checkColumns();
+  Values::WinState checkRows();
+  Values::WinState checkTopLeftDiagonal();
+  Values::WinState checkBottomLeftDiagonal();
+  bool checkBoardFull();
 
 
  protected:

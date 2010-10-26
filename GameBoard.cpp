@@ -1,5 +1,9 @@
 #include "GameBoard.hpp"
 
+#include <iostream>
+
+using namespace std;
+
 GameBoard::GameBoard(){
   setupBoard();
 }
@@ -61,98 +65,112 @@ int GameBoard::getColumns() const{
 
 Values::WinState GameBoard::checkGameWon(){
   // needed to see if there is a draw
-  bool foundNull = false;
-
   Values::WinState win = Values::WIN_NULL;
 
-  win = checkColumns(foundNull);
+  win = checkColumns();
   if ( win != Values::WIN_NULL ){
+    cout << "Winning column found" << endl;
     return win;
   }
   
-  win = checkRows(foundNull);
+  win = checkRows();
   if ( win != Values::WIN_NULL ){
+    cout << "Winning row found" << endl;
     return win;
   }
 
-  win = checkLRDiagonal(foundNull);
+  win = checkTopLeftDiagonal();
   if ( win != Values::WIN_NULL ){
+    cout << "Winning diagonal found ( top left to bottom right ) "<< endl;
     return win;
   }
 
-  win = checkRLDiagonal(foundNull);
+  win = checkBottomLeftDiagonal();
   if ( win != Values::WIN_NULL ){
+    cout << "Winning diagonal found ( bottom left to top right )" << endl;
     return win;
   }
 
-  if ( !foundNull ){
+  if ( checkBoardFull() ){
+    cout << "Board is full! It's a tie." << endl;
     return Values::WIN_TIE;
   }
 
   return win;
 }
 
+bool GameBoard::checkBoardFull(){
+  bool boardFull = true;
 
-Values::WinState GameBoard::checkColumns( bool &foundNull ){
+  for ( int i=0; i<_rows; i++ ) {
+    for ( int j=0; j<_columns; j++ ){
+      if ( _board[i][j] == Values::PLAYER_NULL ){
+	boardFull = false;
+      }
+    }
+  }
+
+  return boardFull;
+}
+
+
+Values::WinState GameBoard::checkColumns(){
   // check columns
   bool columnComplete  = false;
   int lastChecked = 0;
-  
-  for ( int i=0; i<_rows; i++ ){
-    for ( int j=0; j<_columns; j++ ) {
+
+  for ( int j=0; j<_columns; j++ ) {  
+    for ( int i=0; i<_rows; i++ ){
       if ( i==0 ){
-	// if in the first spot in a column
+	// if in the first spot in a row
 	if ( _board[i][j] != Values::PLAYER_NULL ) {
-	  // check to see if this player owns this column
+	  // check to see if this player owns this row
 	  lastChecked = _board[i][j];
 	} else {
-	  foundNull = true;
-	  // check the next column
+	  // check the next row
 	  break;
 	}
       } else {
-	// does this spot match the previous in this column?
+	// does this spot match the previous in this row?
 	if ( _board[i][j] == lastChecked ){
 	  columnComplete = true;
 	} else {
-	  if ( _board[i][j] == Values::PLAYER_NULL ){
-	    foundNull = true;
-	  }
 	  columnComplete = false;
 	  break;
 	}
       }
     }
+
+    if ( columnComplete ){
+      switch ( lastChecked ){
+	case Values::PLAYER_ONE:
+	  return Values::WIN_ONE;
+	  break;
+	
+	case Values::PLAYER_TWO:
+	  return Values::WIN_TWO;
+	  break;
+      }
+    }
+
   }
 
-  if ( columnComplete ){
-    switch ( lastChecked ){
-      case Values::PLAYER_ONE:
-	return Values::WIN_ONE;
-	break;
-	
-      case Values::PLAYER_TWO:
-	return Values::WIN_TWO;
-	break;
-    }
-  }
   return Values::WIN_NULL;
 }
 
-Values::WinState GameBoard::checkRows( bool &foundNull ){
+Values::WinState GameBoard::checkRows(){
   // check rows
   bool rowsComplete  = false;
   int lastChecked = 0;
-  
-  for ( int j=0; j<_rows; j++ ){
-    for ( int i=0; i<_columns; i++ ) {
+
+  for ( int i=0; i<_columns; i++ ) {  
+    for ( int j=0; j<_rows; j++ ){
       if ( j==0 ){
 	// if in the first spot in a column
 	if ( _board[i][j] != Values::PLAYER_NULL ) {
 	  // check to see if this player owns this column
 	  lastChecked = _board[i][j];
 	} else {
-	  foundNull = true;
 	  // check the next column
 	  break;
 	}
@@ -161,27 +179,26 @@ Values::WinState GameBoard::checkRows( bool &foundNull ){
 	if ( _board[i][j] == lastChecked ){
 	  rowsComplete = true;
 	} else {
-	  if ( _board[i][j] == Values::PLAYER_NULL ){
-	    foundNull = true;
-	  }
 	  rowsComplete = false;
 	  break;
 	}
       }
     }
+
+    if ( rowsComplete ){
+      switch ( lastChecked ){
+	case Values::PLAYER_ONE:
+	  return Values::WIN_ONE;
+	  break;
+	
+	case Values::PLAYER_TWO:
+	  return Values::WIN_TWO;
+	  break;
+      }
+    }
+
   }
 
-  if ( rowsComplete ){
-    switch ( lastChecked ){
-      case Values::PLAYER_ONE:
-	return Values::WIN_ONE;
-	break;
-	
-      case Values::PLAYER_TWO:
-	return Values::WIN_TWO;
-	break;
-    }
-  }
   return Values::WIN_NULL;
 }
 
@@ -191,15 +208,15 @@ Values::WinState GameBoard::checkRows( bool &foundNull ){
  * 
  * Currently only works for square boards.
  */
-Values::WinState GameBoard::checkLRDiagonal( bool &foundNull ){
+Values::WinState GameBoard::checkBottomLeftDiagonal(){
   int lastChecked = 0;
   bool diagonalComplete = false;
 
   for ( int i=(_rows-1), j=0;
 	i >= 0, j<_columns;
 	i--, j++ ) {
-    if ( i==0 && j==0 ){
-      // top right position
+    if ( i==(_rows-1) && j==0 ){
+      // bottom left
       if ( _board[i][j] == Values::PLAYER_NULL ){
 	// first position is null, so no need to continue
 	lastChecked = Values::PLAYER_NULL;
@@ -237,31 +254,10 @@ Values::WinState GameBoard::checkLRDiagonal( bool &foundNull ){
  *
  * Right now this only works for square boards.
  */
-Values::WinState GameBoard::checkRLDiagonal( bool &foundNull ){
+Values::WinState GameBoard::checkTopLeftDiagonal(){
   int lastChecked = 0;
   bool diagonalComplete = false;
 
-  for ( int i=0, j=0;
-	i<_rows, j<_columns;
-	i++, j++ ) {
-    if ( i==(_rows-1) && j==(_columns-1) ){
-      // bottom left position
-      if ( _board[i][j] == Values::PLAYER_NULL ){
-	// first position is null, so no need to continue
-	lastChecked = Values::PLAYER_NULL;
-	break;
-      } else {
-	lastChecked = _board[i][j];
-      }
-    } else {
-      if ( _board[i][j] != lastChecked ){
-	diagonalComplete = false;
-	break;
-      } else {
-	diagonalComplete = true;
-      }
-    }
-  }
 
   if ( diagonalComplete ) {
     switch ( lastChecked ){
