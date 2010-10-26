@@ -106,6 +106,18 @@ void GameEngine::gameLoop(){
   }
 }
 
+void GameEngine::checkForEvents(){
+  while ( SDL_PollEvent( _event ) ){
+    if ( _event->type == SDL_QUIT ){
+      _current_state = Values::STATE_QUIT;
+    }
+
+    adjustEventForBoard();
+
+    _state->handleInput();
+  }
+}
+
 void GameEngine::switchState( Values::WinState w ){
   if ( _current_state != Values::STATE_NULL &&
     _switch_state == true ){
@@ -150,17 +162,6 @@ SDL_Surface *GameEngine::getBoardSurface(){
   return _board_surface;
 }
 
-void GameEngine::checkForEvents(){
-  while ( SDL_PollEvent( _event ) ){
-    if ( _event->type == SDL_QUIT ){
-      _current_state = Values::STATE_QUIT;
-    }
-
-    adjustEventForBoard();
-
-    _state->handleInput();
-  }
-}
 
 void GameEngine::adjustEventForBoard(){
   switch ( _event->type ) {
