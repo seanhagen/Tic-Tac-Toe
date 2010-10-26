@@ -3,6 +3,10 @@
 #include "GraphicsComponent.hpp"
 #include "GameEngine.hpp"
 
+#include <iostream>
+
+using namespace std;
+
 GameState::GameState( InputComponent *player_one,
 		      InputComponent *player_two,
 		      GraphicsComponent *graphics,
@@ -23,7 +27,7 @@ void GameState::handleInput(){
   Values::CurrentTurn turn = _engine->getCurrentTurn();
   if ( turn == Values::TURN_ONE && _player_one != NULL){
     _player_one->update( this, _engine );
-  } else if ( turn == Values::TURN_ONE && _player_two != NULL ){
+  } else if ( turn == Values::TURN_TWO && _player_two != NULL ){
     _player_two->update( this, _engine );
   }
 }

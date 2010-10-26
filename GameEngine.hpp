@@ -15,7 +15,7 @@ class GameEngine {
   GameEngine();
   ~GameEngine();
   void gameLoop();
-  void switchState();
+  void switchState( Values::WinState w );
   void render();
   void checkForEvents();
 
@@ -25,6 +25,7 @@ class GameEngine {
   Values::States getCurrentState();
   void setCurrentState( Values::States state );
 
+  SDL_Surface* getBoardSurface();
   BackgroundSprite* getBackground();
   GameBoard* getGameBoard();
 
@@ -70,7 +71,7 @@ class GameEngine {
   void getTitleState();
   void getAboutState();
   void getBoardState();
-  void getGameOverState();
+  void getGameOverState( Values::WinState w );
 
   void adjustEventForBoard();
  protected:

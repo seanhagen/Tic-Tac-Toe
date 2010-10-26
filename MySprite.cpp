@@ -33,6 +33,14 @@ void MySprite::update(){
   }
 }
 
+void MySprite::update( SDL_Rect *offset ){
+  if ( _current_frame != -1 ){
+    if ( _image != NULL ) {
+      SDL_BlitSurface( _image, &_source_clip, _screen, offset );
+    }
+  }
+}
+
 void MySprite::switchFrame( int frame ){
   bool frameChanged = false;
   if ( _current_frame != frame ){

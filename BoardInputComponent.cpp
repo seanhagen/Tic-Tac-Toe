@@ -33,9 +33,7 @@ BoardInputComponent::BoardInputComponent( GameBoard *board, SDL_Event *event ):
 }
 
 BoardInputComponent::~BoardInputComponent(){
-  int rows = _board->getRows();
-
-  for ( int i=0; i<rows; i++) {
+  for ( int i=0; i<_rows; i++) {
     delete [] _squares[i];
   }
 

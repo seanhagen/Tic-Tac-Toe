@@ -77,13 +77,36 @@ void GameEngine::gameLoop(){
   while ( _current_state != Values::STATE_QUIT ){
     checkForEvents();
 
-    switchState();
+    Values::WinState w = Values::WIN_NULL;
+
+    if ( _current_state == Values::STATE_BOARD ){
+      w = _board->checkGameWon();
+      if ( w != Values::WIN_NULL ){
+	switch ( w ){
+	case Values::WIN_ONE:
+	  _current_state = Values::STATE_PLAYER_1_WIN;
+	  break;
+
+	case Values::WIN_TWO:
+	  _current_state = Values::STATE_PLAYER_2_WIN;
+	  break;
+
+	case Values::WIN_TIE:
+	  _current_state = Values::STATE_PLAYER_TIE;
+	}
+	if ( _current_state != _last_state )
+	  _switch_state = true;
+      }
+    }
+
+    switchState(w);
 
     render();
+
   }
 }
 
-void GameEngine::switchState(){
+void GameEngine::switchState( Values::WinState w ){
   if ( _current_state != Values::STATE_NULL &&
     _switch_state == true ){
     switch ( _current_state ){
@@ -103,9 +126,9 @@ void GameEngine::switchState(){
 	getBoardState();
 	break;
 
-      case Values::STATE_WON:
-      case Values::STATE_LOST:
-	getGameOverState();
+      case Values::STATE_PLAYER_1_WIN:
+      case Values::STATE_PLAYER_2_WIN:
+	getGameOverState(w);
 	break;
     }
     _switch_state = false;
@@ -121,6 +144,10 @@ void GameEngine::render(){
     cout << "Unable to flip screen: " << SDL_GetError() << endl;
     _current_state = Values::STATE_QUIT;
   }
+}
+
+SDL_Surface *GameEngine::getBoardSurface(){
+  return _board_surface;
 }
 
 void GameEngine::checkForEvents(){
@@ -199,7 +226,25 @@ void GameEngine::getAboutState(){
 }
 
 
-void GameEngine::getGameOverState(){
+void GameEngine::getGameOverState( Values::WinState w ){
+  _current_state = Values::STATE_QUIT;
+  _switch_state = true;
+
+  cout << endl << "Game Over!" << endl;
+
+  switch ( w ){
+  case Values::WIN_ONE:
+    cout << "Player one won!" << endl;
+    break;
+
+  case Values::WIN_TWO:
+    cout << "Player two won!" << endl;
+    break;
+
+  case Values::WIN_TIE:
+    cout << "Tie game!" << endl;
+    break;
+  }
 
 }
 

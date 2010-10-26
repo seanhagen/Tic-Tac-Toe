@@ -15,6 +15,7 @@ class MySprite {
   MySprite(SDL_Surface* screen, int xpos, int ypos);
   ~MySprite();
   virtual void update();
+  virtual void update( SDL_Rect *offset );
   virtual void switchFrame(int frame);
  private:
 

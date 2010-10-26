@@ -36,11 +36,13 @@ class BoardAIInputComponent : public InputComponent {
 
   void mark( int **, int);
   void combine( Values::CurrentTurn );
-  void chooseSquare( Values::CurrentTurn );
+  void chooseSquare( Values::CurrentTurn, GameEngine *engine );
 
-  void initMap( int **map );
+  int **initMap();
   void deleteMap( int **map );
   void zeroMap( int **map );
+
+  void printBoard( int **map );
 
 };
 

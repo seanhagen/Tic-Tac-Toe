@@ -30,8 +30,9 @@ namespace Values {
     STATE_TITLE,
     STATE_ABOUT,
     STATE_BOARD,
-    STATE_WON,
-    STATE_LOST,
+    STATE_PLAYER_1_WIN,
+    STATE_PLAYER_2_WIN,
+    STATE_PLAYER_TIE,
     STATE_QUIT
   };
 };

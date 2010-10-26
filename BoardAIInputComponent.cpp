@@ -18,10 +18,10 @@ BoardAIInputComponent::BoardAIInputComponent( GameBoard *board, SDL_Event *event
   _rows = _board->getRows();
   _columns = _board->getColumns();
 
-  initMap(_current_board);
-  initMap(_friends);
-  initMap(_blocks);
-  initMap(_combined);
+  _current_board = initMap();
+  _friends = initMap();
+  _blocks = initMap();
+  _combined = initMap();
 }
 
 BoardAIInputComponent::~BoardAIInputComponent(){
@@ -48,7 +48,7 @@ void BoardAIInputComponent::update( GameState *obj, GameEngine *engine ){
   markFriends(turn);
   markBlocks(turn);
   combine(turn);
-  chooseSquare(turn);
+  chooseSquare(turn,engine);
 }
 
 
@@ -57,7 +57,6 @@ void BoardAIInputComponent::markFriends( Values::CurrentTurn t ){
     Values::PLAYER_ONE : Values::PLAYER_TWO;
 
   mark( _friends, me );
-
 }
 
 void BoardAIInputComponent::markBlocks( Values::CurrentTurn t ){
@@ -175,7 +174,7 @@ void BoardAIInputComponent::combine( Values::CurrentTurn t ){
   }
 }
 
-void BoardAIInputComponent::chooseSquare( Values::CurrentTurn t ){
+void BoardAIInputComponent::chooseSquare( Values::CurrentTurn t, GameEngine *engine ){
   bool highestFound = false;
   int highest = 0;
 
@@ -226,6 +225,8 @@ void BoardAIInputComponent::chooseSquare( Values::CurrentTurn t ){
     
     if ( !marked ){
       cout << "Position already picked?!?! Sean's AI fails at picking spots." << endl;
+    } else {
+      engine->setCurrentTurn( Values::TURN_ONE );
     }
 
   } else {
@@ -235,27 +236,40 @@ void BoardAIInputComponent::chooseSquare( Values::CurrentTurn t ){
 
 }
 
-void BoardAIInputComponent::initMap( int **map ){
-  map = new int*[_rows];
+int ** BoardAIInputComponent::initMap(){
+  cout << "...";
+
+  int ** _map = new int*[_rows];
 
   for ( int i=0; i<_rows; i++ ){
-    map[i] = new int[_columns];
+    _map[i] = new int[_columns];
   }
+
+  return _map;
 }
 
-void BoardAIInputComponent::deleteMap( int **map ){
+void BoardAIInputComponent::deleteMap( int **_map ){
   for ( int i=0; i<_rows; i++ ){
-    delete [] map[i];
+    delete [] _map[i];
   }
 
-  delete map;
+  delete _map;
 }
 
-void BoardAIInputComponent::zeroMap( int **map ){
+void BoardAIInputComponent::zeroMap( int **_map ){
   for ( int i=0; i<_rows; i++ ) {
     for ( int j=0; j<_columns; j++ ){
-      map[i][j] = 0;
+      _map[i][j] = 0;
     }
   }
 }
 
+void BoardAIInputComponent::printBoard( int **_map ){
+  cout << "+-+-+-+" << endl;
+  for ( int i=0; i<_rows; i++) {
+    for ( int j=0; j<_columns; j++) {
+      cout << "|" << _map[i][j];
+    }
+  }
+  cout << "|" << endl << "+-+-+-+" << endl;
+}
